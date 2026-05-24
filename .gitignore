@@ -38,3 +38,8 @@ server.log
 dist/
 build/
 .cache/
+
+# Secrets
+*.key
+*.pem
+*.token
