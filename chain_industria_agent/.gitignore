@@ -1,0 +1,69 @@
+# Entornos virtuales
+.venv/
+venv/
+ENV/
+env/
+
+# IDE y editores
+.vscode/
+.cursor/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+PIPFILE.lock
+
+# Archivos de configuración local
+.env
+.env.local
+.env.*.local
+
+# Logs y archivos temporales
+*.log
+*.pot
+*.mo
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node modules (si usas node)
+node_modules/
+
+# PM2
+ecosystem.config.js
+.pm2/
+
+# Archivos temporales del sistema
+Thumbs.db
+.DS_Store
+
+# Directorio de datos sensibles
+memory/private/
+
+# Archivos generados
+*.generated
