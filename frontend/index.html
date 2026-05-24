@@ -1,22 +1,142 @@
+cd ~/agents
+git add -A
+git commit -m "fix: functional search UI"
+git push
 <!DOCTYPE html>
 <html>
 <head>
   <title>CTRLPLAY</title>
+  <style>
+    body {
+      background:#0d0d0d;
+      color:#fff;
+      font-family:Arial;
+      margin:0;
+      padding:20px;
+    }
+
+    h1 {
+      margin-bottom:10px;
+    }
+
+    input {
+      width:100%;
+      padding:12px;
+      margin-bottom:20px;
+      border-radius:8px;
+      border:none;
+      font-size:16px;
+    }
+
+    .info {
+      margin-bottom:10px;
+      color:#aaa;
+    }
+
+    .grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+      gap:15px;
+    }
+
+    .card {
+      background:#1f1f1f;
+      padding:15px;
+      border-radius:10px;
+      cursor:pointer;
+      transition:0.2s;
+    }
+
+    .card:hover {
+      transform:scale(1.05);
+      background:#333;
+    }
+
+    .empty {
+      margin-top:20px;
+      color:#888;
+    }
+  </style>
 </head>
+
 <body>
 
-<h1>CTRLPLAY ✅</h1>
+<h1>🎬 CTRLPLAY</h1>
+
+<input id="search" placeholder="Buscar contenido..." />
+
+<div class="info" id="info">Mostrando 0 resultados</div>
+
+<div id="app" class="grid"></div>
+<div id="empty" class="empty" style="display:none;">
+  ❌ No se encontraron resultados
+</div>
+
+<script>
+
+// BASE DE DATOS (puedes expandir esto luego)
+const data = [
+  {name:"GolTV", cat:"fútbol"},
+  {name:"FIFA TV", cat:"fútbol"},
+  {name:"Cartoon Network", cat:"animación"},
+  {name:"Spotify", cat:"música"},
+  {name:"ESPN", cat:"deportes"},
+  {name:"Disney+", cat:"series"},
+  {name:"Netflix", cat:"películas"}
+];
+
+const app = document.getElementById("app");
+const search = document.getElementById("search");
+const empty = document.getElementById("empty");
+const info = document.getElementById("info");
+
+// RENDER REAL
+function render(list){
+  app.innerHTML = "";
+
+  info.innerText = "Mostrando " + list.length + " resultados";
+
+  if(list.length === 0){
+    empty.style.display = "block";
+    return;
+  } else {
+    empty.style.display = "none";
+  }
+
+  list.forEach(item=>{
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <h3>${item.name}</h3>
+      <p>${item.cat}</p>
+    `;
+
+    // interacción real
+    card.onclick = () => {
+      alert("Abrir: " + item.name);
+    };
+
+    app.appendChild(card);
+  });
+}
+
+// INICIO
+render(data);
+
+// BUSCADOR PRO REAL
+search.addEventListener("input", e=>{
+  const value = e.target.value.toLowerCase();
+
+  const filtered = data.filter(item =>
+    item.name.toLowerCase().includes(value) ||
+    item.cat.toLowerCase().includes(value)
+  );
+
+  render(filtered);
+});
+
+</script>
 
 </body>
-</html>cd ~/agents
-
-git add frontend
-git commit -m "frontend clean deploy"
-git push
-
-cd ~/agents
-
-rm -rf frontend
-mkdir frontend
-nano frontend/index.html``
-
+</html>``

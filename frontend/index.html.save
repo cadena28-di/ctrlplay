@@ -1,0 +1,5 @@
+cd ~/agents
+git add -A
+git commit -m "fix: functional search UI"
+git push
+``
