@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CTRLPLAY</title>
+  <style>
+    body {
+      background:#111;
+      color:#fff;
+      font-family:Arial;
+      padding:20px;
+    }
+
+    input {
+      width:100%;
+      padding:12px;
+      margin-bottom:20px;
+      border-radius:8px;
+      border:none;
+    }
+
+    .grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+      gap:15px;
+    }
+
+    .card {
+      background:#222;
+      padding:10px;
+      border-radius:10px;
+      transition:0.2s;
+    }
+
+    .card:hover {
+      transform:scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>CTRLPLAY</h1>
+
+<input id="search" placeholder="Buscar..." />
+
+<div id="app" class="grid"></div>
+
+<script>
+const data=[
+{name:"GolTV",cat:"football"},
+{name:"FIFA",cat:"football"},
+{name:"Cartoon Network",cat:"cartoons"},
+{name:"Spotify",cat:"music"}
+];
+
+const app=document.getElementById("app");
+const search=document.getElementById("search");
+
+function render(list){
+app.innerHTML="";
+list.forEach(i=>{
+app.innerHTML+=`
+<div class="card">
+<h3>${i.name}</h3>
+<p>${i.cat}</p>
+</div>`;
+});
+}
+
+render(data);
+
+search.addEventListener("input",e=>{
+const f=data.filter(i=>
+i.name.toLowerCase().includes(e.target.value.toLowerCase())
+);
+render(f);
+});
+</script>
+
+</body>
+</html>
+``
