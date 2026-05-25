@@ -1,82 +1,781 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>CTRLPLAY</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+  <meta name="description" content="CTRL+PLAY v2.1 — 250+ fuentes gratuitas y legales. Fútbol, animación, canales internacionales, música y más.">
+  <meta name="theme-color" content="#06060b">
+  <title>◈ CTRL+PLAY v2.1 — Entretenimiento Gratuito y Legal</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin="anonymous"></script>
   <style>
-    body {
-      background:#111;
-      color:#fff;
-      font-family:Arial;
-      padding:20px;
+    :root{
+      --bg0:#06060b;--bg1:#0a0a12;--bg2:#0f0f1a;--bgc:#131320;--bgh:#1a1a28;
+      --live:#ff3b5c;--intl:#7c6eff;--foot:#00d084;--toon:#ff9f1c;
+      --mov:#ff6eb4;--mus:#3effc8;--pod:#ffc844;--gam:#56b3ff;--edu:#0fd9c8;
+      --t0:#f0f0f8;--t1:#9090b8;--t2:#44445a;
+      --bd:#1a1a2e;--bdh:#2e2e5e;
+      --fn:'Courier New',Courier,'Lucida Console',monospace;--r:5px;
     }
-
-    input {
-      width:100%;
-      padding:12px;
-      margin-bottom:20px;
-      border-radius:8px;
-      border:none;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg0);color:var(--t0);font-family:var(--fn);font-size:13px;line-height:1.5;min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 6px);pointer-events:none;z-index:9998}
+    body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(124,110,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(124,110,255,.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:9997}
+    /* header */
+    .hdr{background:linear-gradient(180deg,#0d0d18,#0a0a12);border-bottom:1px solid var(--bdh);padding:0 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;height:52px;box-shadow:0 4px 30px rgba(0,0,0,.5)}
+    .logo{font-size:18px;font-weight:bold;letter-spacing:4px;color:#fff;text-shadow:0 0 30px rgba(124,110,255,.5);display:flex;align-items:center;gap:4px}
+    .logo-plus{color:var(--live);animation:blink 2s ease-in-out infinite}
+    .logo-v{font-size:10px;color:var(--t2);margin-left:4px;align-self:flex-end;margin-bottom:3px}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+    .hr{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .pill{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:bold;border:1px solid;display:flex;align-items:center;gap:4px}
+    .p-live{background:rgba(255,59,92,.15);border-color:var(--live);color:var(--live);animation:ppulse 1.5s ease-in-out infinite}
+    .p-sec{background:rgba(62,255,200,.08);border-color:rgba(62,255,200,.3);color:var(--mus)}
+    .p-free{background:rgba(124,110,255,.1);border-color:var(--intl);color:var(--intl)}
+    .p-cnt{background:rgba(255,255,255,.04);border-color:var(--bdh);color:var(--t1)}
+    @keyframes ppulse{0%,100%{box-shadow:0 0 6px rgba(255,59,92,.3)}50%{box-shadow:none}}
+    .ldot{width:7px;height:7px;background:var(--live);border-radius:50%;animation:dotpulse 1s ease-in-out infinite;flex-shrink:0}
+    @keyframes dotpulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
+    /* alert */
+    .alert{border-bottom:1px solid var(--live);padding:9px 20px;display:flex;align-items:center;justify-content:space-between;animation:abg 2s ease-in-out infinite}
+    @keyframes abg{0%,100%{background:linear-gradient(90deg,#1a0008,#220010,#1a0008)}50%{background:linear-gradient(90deg,#220010,#300018,#220010)}}
+    .al{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .at{font-size:12px;font-weight:bold}
+    .at.lv{color:#ff6b6b}.at.wn{color:var(--pod)}
+    .btn-al{background:var(--live);color:#fff;border:none;padding:6px 14px;cursor:pointer;font-family:var(--fn);font-size:11px;border-radius:var(--r);display:flex;align-items:center;gap:5px;transition:opacity .2s}
+    .btn-al:hover{opacity:.8}
+    .btn-cl{background:transparent;border:1px solid var(--t2);color:var(--t1);padding:4px 10px;cursor:pointer;font-family:var(--fn);font-size:11px;border-radius:var(--r);transition:all .2s}
+    .btn-cl:hover{border-color:var(--t0);color:var(--t0)}
+    /* stats */
+    .stats{background:rgba(0,0,0,.4);border-bottom:1px solid var(--bd);padding:7px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--t2)}
+    .st{display:flex;align-items:center;gap:5px}
+    .st strong{color:var(--intl)}
+    /* search */
+    .sw{padding:14px 20px;background:var(--bg1);border-bottom:1px solid var(--bd)}
+    .si{width:100%;background:var(--bgc);border:1px solid var(--bdh);color:var(--t0);padding:10px 16px;font-family:var(--fn);font-size:13px;border-radius:var(--r);outline:none;transition:border-color .2s,box-shadow .2s}
+    .si:focus{border-color:var(--intl);box-shadow:0 0 0 2px rgba(124,110,255,.15)}
+    .si::placeholder{color:var(--t2)}
+    .sh{margin-top:6px;font-size:10px;color:var(--t2)}
+    .sh strong{color:var(--intl)}
+    /* nav */
+    .nav{display:flex;overflow-x:auto;background:var(--bg1);border-bottom:1px solid var(--bd);scrollbar-width:none}
+    .nav::-webkit-scrollbar{display:none}
+    .nb{padding:11px 15px;cursor:pointer;white-space:nowrap;color:var(--t1);border:none;border-bottom:2px solid transparent;background:none;font-family:var(--fn);font-size:12px;display:flex;align-items:center;gap:5px;transition:all .15s;flex-shrink:0}
+    .nb:hover{color:var(--t0);background:rgba(255,255,255,.03)}
+    .nb.act{color:var(--t0);font-weight:bold}
+    .nb-new{font-size:9px;padding:1px 5px;border-radius:3px;background:var(--intl);color:#fff;font-weight:bold}
+    .nb-hot{font-size:9px;padding:1px 5px;border-radius:3px;background:var(--foot);color:#000;font-weight:bold}
+    /* content */
+    .ct{padding:20px;max-width:1440px;margin:0 auto}
+    .sh2{display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+    .si2{font-size:22px}
+    .st2{font-size:17px;font-weight:bold;letter-spacing:2px}
+    .sc{font-size:10px;color:var(--t2);padding:2px 8px;border:1px solid var(--bdh);border-radius:20px}
+    /* grid */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:10px}
+    /* card */
+    .card{background:var(--bgc);border:1px solid var(--bd);border-radius:var(--r);padding:13px;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;gap:7px;position:relative;overflow:hidden}
+    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--ca,var(--intl));opacity:0;transition:opacity .18s}
+    .card:hover{border-color:var(--ca,var(--intl));background:var(--bgh);transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,0,0,.4)}
+    .card:hover::before{opacity:1}
+    .ctop{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+    .cn{font-size:13px;font-weight:bold;color:var(--t0);letter-spacing:.3px}
+    .ctp{font-size:9px;padding:2px 6px;border-radius:3px;white-space:nowrap;flex-shrink:0}
+    .cd{font-size:11px;color:var(--t1);line-height:1.4}
+    .ctags{display:flex;flex-wrap:wrap;gap:3px}
+    .tag{font-size:10px;color:var(--t2);background:rgba(255,255,255,.02);border:1px solid var(--bd);padding:1px 5px;border-radius:3px}
+    .cact{display:flex;gap:5px;margin-top:2px}
+    .bop{flex:1;background:transparent;border:1px solid var(--ca,var(--intl));color:var(--ca,var(--intl));padding:6px 10px;cursor:pointer;font-family:var(--fn);font-size:11px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;gap:4px;transition:all .18s}
+    .bop:hover{background:var(--ca,var(--intl));color:#000;font-weight:bold}
+    .bcp{background:transparent;border:1px solid var(--bdh);color:var(--t2);padding:6px 9px;cursor:pointer;font-family:var(--fn);font-size:11px;border-radius:var(--r);transition:all .15s}
+    .bcp:hover{border-color:var(--t1);color:var(--t0)}
+    /* internacional */
+    .il{display:grid;grid-template-columns:200px 1fr;gap:16px}
+    .rtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+    .rb{padding:7px 12px;background:var(--bgc);border:1px solid var(--bdh);border-radius:var(--r);color:var(--t1);cursor:pointer;font-family:var(--fn);font-size:12px;display:flex;align-items:center;gap:6px;transition:all .15s}
+    .rb:hover{color:var(--t0);background:var(--bgh)}
+    .rb.act{font-weight:bold}
+    .sb{display:flex;flex-direction:column;gap:4px}
+    .sg{background:var(--bgc);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+    .slbl{padding:7px 11px;font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:2px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bd)}
+    .cb{width:100%;display:flex;align-items:center;gap:8px;padding:8px 11px;background:none;border:none;border-bottom:1px solid rgba(255,255,255,.03);color:var(--t1);cursor:pointer;font-family:var(--fn);font-size:12px;text-align:left;transition:all .12s}
+    .cb:last-child{border-bottom:none}
+    .cb:hover{background:rgba(255,255,255,.04);color:var(--t0)}
+    .cb.sel{font-weight:bold;padding-left:14px;border-left:3px solid}
+    .flg{font-size:15px}
+    .cc{margin-left:auto;font-size:10px;color:var(--t2)}
+    .chdr{display:flex;align-items:center;gap:14px;padding:14px;background:var(--bgc);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:14px}
+    .cflg{font-size:36px}
+    .ci h2{font-size:16px;font-weight:bold;margin-bottom:3px}
+    .ci p{font-size:11px;color:var(--t1)}
+    .cbdgs{margin-left:auto;display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+    /* footer */
+    .ftr{text-align:center;padding:28px 20px;border-top:1px solid var(--bd);margin-top:48px}
+    .flogo{font-size:20px;letter-spacing:4px;color:var(--t1);margin-bottom:8px}
+    .fdev{font-size:12px;color:var(--t2);margin-bottom:4px}
+    .fdev strong{color:var(--t1)}
+    .fdev .asesor{color:var(--intl);font-weight:bold}
+    .fnote{font-size:10px;color:var(--t2);max-width:520px;margin:10px auto 0;line-height:1.6}
+    /* no results */
+    .nores{text-align:center;padding:48px 20px;color:var(--t2)}
+    /* scrollbar */
+    ::-webkit-scrollbar{width:5px;height:5px}
+    ::-webkit-scrollbar-track{background:var(--bg1)}
+    ::-webkit-scrollbar-thumb{background:var(--bdh);border-radius:3px}
+    ::-webkit-scrollbar-thumb:hover{background:var(--t2)}
+    /* responsive */
+    @media(max-width:720px){
+      .hdr{height:auto;padding:10px 14px;flex-wrap:wrap;gap:8px}
+      .il{grid-template-columns:1fr}
+      .sb{flex-direction:row;overflow-x:auto}
+      .sg{flex-shrink:0}
+      .ct{padding:12px}
+      .grid{grid-template-columns:1fr}
     }
-
-    .grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-      gap:15px;
-    }
-
-    .card {
-      background:#222;
-      padding:10px;
-      border-radius:10px;
-      transition:0.2s;
-    }
-
-    .card:hover {
-      transform:scale(1.05);
+    @media(max-width:480px){
+      .hr .p-cnt,.hr .p-free{display:none}
+      .logo-v{display:none}
     }
   </style>
 </head>
-
 <body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useMemo } = React;
 
-<h1>CTRLPLAY</h1>
-
-<input id="search" placeholder="Buscar..." />
-
-<div id="app" class="grid"></div>
-
-<script>
-const data=[
-{name:"GolTV",cat:"football"},
-{name:"FIFA",cat:"football"},
-{name:"Cartoon Network",cat:"cartoons"},
-{name:"Spotify",cat:"music"}
-];
-
-const app=document.getElementById("app");
-const search=document.getElementById("search");
-
-function render(list){
-app.innerHTML="";
-list.forEach(i=>{
-app.innerHTML+=`
-<div class="card">
-<h3>${i.name}</h3>
-<p>${i.cat}</p>
-</div>`;
-});
+/* ══ SECURITY v2.1 ══ */
+function isValidUrl(url) {
+  try { const u=new URL(String(url)); return ['https:','http:'].includes(u.protocol); }
+  catch { return false; }
+}
+function safeOpen(url) {
+  if (!isValidUrl(url)) { console.warn('[CTRL+PLAY] URL bloqueada:',url); return; }
+  const a=document.createElement('a');
+  a.href=url; a.target='_blank'; a.rel='noopener noreferrer';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+function safeCopy(text) {
+  const s=String(text).slice(0,200);
+  return navigator.clipboard.writeText(s).catch(()=>{
+    try { const e=document.createElement('textarea'); e.value=s; document.body.appendChild(e); e.select(); document.execCommand('copy'); document.body.removeChild(e); } catch{}
+  });
 }
 
-render(data);
+/* ══ DATA ══ */
+const CAT = {
+  live:{id:'live',icon:'🔴',name:'En Vivo',color:'#ff3b5c',badge:'LIVE',sources:[
+    {name:'Noticias Caracol',url:'https://www.youtube.com/@NoticiasCaracol/live',desc:'Noticiero líder de Colombia en vivo',tags:['colombia','noticias'],type:'noticia'},
+    {name:'Caracol TV',url:'https://www.caracoltv.com/envivo',desc:'Canal 1 Colombia — entretenimiento',tags:['colombia','entretenimiento'],type:'tv'},
+    {name:'RCN Televisión',url:'https://www.youtube.com/@RCNTelevisión/live',desc:'Cadena Nacional colombiana',tags:['colombia','entretenimiento'],type:'tv'},
+    {name:'Señal Colombia',url:'https://www.youtube.com/@SenalColombia/live',desc:'Canal público cultural de Colombia',tags:['colombia','cultura'],type:'cultura'},
+    {name:'Canal UNO Colombia',url:'https://www.youtube.com/@CanalUNOcolombia/live',desc:'Tercer canal nacional de Colombia',tags:['colombia','entretenimiento'],type:'tv'},
+    {name:'Telemedellín',url:'https://www.youtube.com/@telemedellín/live',desc:'Canal público de Medellín',tags:['medellín','regional'],type:'regional'},
+    {name:'Canal Trece',url:'https://www.youtube.com/@CanalTrece/live',desc:'Canal alternativo y cultural Colombia',tags:['colombia','cultura'],type:'cultura'},
+    {name:'Canal Capital',url:'https://www.youtube.com/@CanalCapital/live',desc:'Canal público de Bogotá',tags:['bogotá','regional'],type:'regional'},
+    {name:'Teleantioquia',url:'https://www.youtube.com/@Teleantioquia/live',desc:'TV pública de Antioquia',tags:['antioquia','regional'],type:'regional'},
+    {name:'RTVE La 1',url:'https://www.rtve.es/directo/la-1',desc:'Televisión Española en directo',tags:['españa','entretenimiento'],type:'tv'},
+    {name:'TVE Canal 24h',url:'https://www.rtve.es/directo/canal-24h',desc:'Noticias 24h en español RTVE',tags:['españa','noticias'],type:'noticia'},
+    {name:'Euronews Español',url:'https://es.euronews.com/live',desc:'Noticias europeas en español',tags:['europa','noticias'],type:'noticia'},
+    {name:'Pluto TV Live',url:'https://pluto.tv',desc:'100+ canales temáticos gratuitos',tags:['usa','entretenimiento'],type:'streaming'},
+    {name:'Plex Live TV',url:'https://www.plex.tv/live-tv',desc:'TV en vivo gratuita Plex',tags:['internacional','entretenimiento'],type:'streaming'},
+    {name:'France 24 ES',url:'https://www.youtube.com/@France24/live',desc:'France 24 en español',tags:['francia','noticias'],type:'noticia'},
+    {name:'DW Español',url:'https://www.youtube.com/@dwespanol/live',desc:'Deutsche Welle en español',tags:['alemania','noticias'],type:'noticia'},
+    {name:'Al Jazeera ES',url:'https://www.youtube.com/@AlJazeeraEspanol/live',desc:'Al Jazeera en español en vivo',tags:['internacional','noticias'],type:'noticia'},
+    {name:'NASA TV Live',url:'https://www.youtube.com/@NASA/live',desc:'Transmisión en vivo de la NASA',tags:['ciencia','espacio'],type:'ciencia'},
+  ]},
 
-search.addEventListener("input",e=>{
-const f=data.filter(i=>
-i.name.toLowerCase().includes(e.target.value.toLowerCase())
-);
-render(f);
-});
+  futbol:{id:'futbol',icon:'⚽',name:'Fútbol & Mundial 2026',color:'#00d084',badge:'MUNDIAL',sources:[
+    {name:'FIFA+',url:'https://www.fifa.com/fifaplus',desc:'Plataforma oficial FIFA — documentales y partidos históricos gratis',tags:['fifa','documentales','histórico'],type:'oficial'},
+    {name:'Canal FIFA YouTube',url:'https://www.youtube.com/@FIFA/videos',desc:'Canal oficial FIFA — archivo histórico de partidos y goles',tags:['fifa','histórico','goles'],type:'oficial'},
+    {name:'Mundial 2026 Oficial',url:'https://www.fifa.com/worldcup',desc:'Sitio oficial FIFA World Cup 2026 — USA·Canadá·México',tags:['mundial','2026'],type:'mundial'},
+    {name:'Telemundo Deportes',url:'https://www.youtube.com/@telemundodeportes/live',desc:'Cobertura oficial Mundial 2026 en español — Telemundo',tags:['mundial','2026','español'],type:'tv'},
+    {name:'Univisión Deportes',url:'https://www.youtube.com/@UnivisionDeportes/live',desc:'Transmisión oficial Mundial 2026 — Univisión',tags:['mundial','2026','español'],type:'tv'},
+    {name:'TUDN (Televisa)',url:'https://www.youtube.com/@TUDN/live',desc:'Deportes Televisa — fútbol en vivo',tags:['fútbol','méxico','deportes'],type:'tv'},
+    {name:'Cristiano Ronaldo Oficial',url:'https://www.youtube.com/@cristiano',desc:'Canal oficial de Cristiano Ronaldo CR7 — contenido exclusivo',tags:['cr7','ronaldo','portugal'],type:'estrella'},
+    {name:'ESPN YouTube',url:'https://www.youtube.com/@ESPN/videos',desc:'ESPN highlights y cobertura deportiva gratis',tags:['deportes','highlights'],type:'deportes'},
+    {name:'Fox Sports MX',url:'https://www.youtube.com/@foxsportsmx/live',desc:'Fox Sports México — fútbol y deportes en vivo',tags:['fútbol','méxico'],type:'tv'},
+    {name:'beIN Sports Français',url:'https://www.youtube.com/@beinsports_fr/live',desc:'beIN Sports en francés — cobertura deportiva',tags:['fútbol','europa'],type:'tv'},
+    {name:'Gol Caracol',url:'https://www.youtube.com/@GolCaracol/live',desc:'Fútbol colombiano en vivo — Caracol',tags:['colombia','fútbol'],type:'tv'},
+    {name:'Win Sports+',url:'https://www.youtube.com/@WinSports/live',desc:'Fútbol colombiano liga local en vivo',tags:['colombia','liga','local'],type:'tv'},
+    {name:'Historia del Fútbol Doc',url:'https://www.youtube.com/@HistoriaDelFutbol',desc:'Documentales históricos del fútbol mundial',tags:['historia','documentales'],type:'documental'},
+    {name:'Copa América Historia',url:'https://www.youtube.com/@CONMEBOL/videos',desc:'CONMEBOL — archivo histórico Copa América',tags:['conmebol','copa-america'],type:'oficial'},
+  ]},
+
+  toon:{id:'toon',icon:'🎨',name:'Historietas & Animación',color:'#ff9f1c',sources:[
+    {name:'Cartoon Network Latin',url:'https://www.youtube.com/@CartoonNetworkLA/videos',desc:'Cartoons oficiales Cartoon Network Latinoamérica',tags:['cartoon','infantil','humor'],type:'clásico'},
+    {name:'Looney Tunes Oficial',url:'https://www.youtube.com/@LooneyTunes/videos',desc:'Canal oficial Bugs Bunny, Pato Lucas y compañía',tags:['looney-tunes','clásico','humor'],type:'clásico'},
+    {name:'Tom & Jerry Oficial',url:'https://www.youtube.com/@TomandJerry/videos',desc:'Tom y Jerry — canal oficial Warner Bros.',tags:['tom-jerry','clásico'],type:'clásico'},
+    {name:'Archive.org Cartoons',url:'https://archive.org/details/classicanimation',desc:'Animaciones clásicas de dominio público en HD',tags:['dominio-publico','clásico','retro'],type:'archivo'},
+    {name:'Pluto TV Cartoons',url:'https://pluto.tv/live-tv/pluto-tv-cartoons',desc:'Canal 24h de cartoons gratis — Pluto TV',tags:['cartoon','24h','gratis'],type:'streaming'},
+    {name:'Crunchyroll Free',url:'https://www.crunchyroll.com',desc:'Anime clásico y actual — sección gratuita con anuncios',tags:['anime','japonés','gratis'],type:'anime'},
+    {name:'Popeye Oficial',url:'https://www.youtube.com/@POPEYEtheofficial/videos',desc:'Canal oficial Popeye el Marino',tags:['popeye','clásico'],type:'clásico'},
+    {name:'DreamWorks Animation',url:'https://www.youtube.com/@DreamWorksAnimationShorts/videos',desc:'Cortos animados oficiales DreamWorks gratis',desc2:'',tags:['dreamworks','animación'],type:'estudio'},
+    {name:'WB Animation',url:'https://www.youtube.com/@wbanimation/videos',desc:'Warner Bros Animation — cortos y series',tags:['warner','animación'],type:'estudio'},
+    {name:'Adult Swim Free',url:'https://www.adultswim.com/videos',desc:'Series animadas para adultos — episodios gratuitos',tags:['adultos','animación','humor'],type:'adultos'},
+    {name:'Rick y Morty Oficial',url:'https://www.youtube.com/@rickandmorty/videos',desc:'Clips y episodios oficiales de Rick y Morty',tags:['rick-morty','adultos','ciencia-ficción'],type:'serie'},
+    {name:'Hanna-Barbera Boomerang',url:'https://www.youtube.com/@CartoonNetwork/videos',desc:'Scooby-Doo, Los Picapiedra, Yogi Bear y más clásicos',tags:['hanna-barbera','clásico'],type:'clásico'},
+  ]},
+
+  movies:{id:'movies',icon:'🎬',name:'Películas & Series',color:'#ff6eb4',sources:[
+    {name:'Tubi TV Acción',url:'https://tubitv.com/category/action',desc:'Miles de películas gratis con publicidad',tags:['acción','gratis'],type:'streaming'},
+    {name:'Pluto TV Cine',url:'https://pluto.tv/live-tv/pluto-tv-cine',desc:'Canal de cine 24h totalmente gratis',tags:['cine','24h'],type:'streaming'},
+    {name:'Internet Archive Films',url:'https://archive.org/details/movies',desc:'Películas clásicas de dominio público',tags:['dominio-publico','clásico'],type:'archivo'},
+    {name:'Crackle (Sony)',url:'https://www.crackle.com',desc:'Series y películas Sony Pictures gratis',tags:['series','sony'],type:'streaming'},
+    {name:'Plex Movies',url:'https://www.plex.tv/movies',desc:'Películas gratuitas en Plex sin registro',tags:['películas','gratis'],type:'streaming'},
+    {name:'Popcornflix',url:'https://www.popcornflix.com',desc:'Películas independientes 100% gratis',tags:['indie','gratis'],type:'streaming'},
+    {name:'Open Culture Films',url:'https://www.openculture.com/freemoviesonline',desc:'Películas clásicas y educativas gratis',tags:['clásico','educación'],type:'cultura'},
+    {name:'Mubi (Prueba)',url:'https://mubi.com',desc:'Cine de autor curado — prueba gratuita',tags:['cine-arte','prueba'],type:'prueba'},
+    {name:'Retroflix',url:'https://www.retroflix.net',desc:'Películas retro y clásicas en español',tags:['retro','clásico','español'],type:'streaming'},
+    {name:'CONtv',url:'https://www.contv.com',desc:'Sci-fi, horror y cómics en video gratis',tags:['sci-fi','horror','comics'],type:'streaming'},
+  ]},
+
+  music:{id:'music',icon:'🎵',name:'Música & Radio',color:'#3effc8',sources:[
+    {name:'Spotify Free',url:'https://open.spotify.com',desc:'Streaming musical con anuncios gratis',tags:['música','podcast'],type:'streaming'},
+    {name:'Radio Garden 🌍',url:'https://radio.garden',desc:'Miles de radios mundiales en globo 3D',tags:['radio','mundial'],type:'radio'},
+    {name:'SoundCloud',url:'https://soundcloud.com',desc:'Música independiente y mezclas DJ',tags:['indie','mezclas'],type:'streaming'},
+    {name:'Jamendo CC',url:'https://www.jamendo.com',desc:'Música Creative Commons 100% libre',tags:['cc','indie'],type:'cc'},
+    {name:'YouTube Music',url:'https://music.youtube.com',desc:'Música en YouTube con anuncios',tags:['música','youtube'],type:'streaming'},
+    {name:'Mixcloud',url:'https://www.mixcloud.com',desc:'Mezclas de DJ y radio en vivo',tags:['dj','radio'],type:'streaming'},
+    {name:'Bandcamp',url:'https://bandcamp.com',desc:'Artistas independientes — escucha gratis',tags:['indie','artistas'],type:'indie'},
+    {name:'Archive Concerts',url:'https://archive.org/details/etree',desc:'Conciertos grabados dominio público',tags:['conciertos','live'],type:'archivo'},
+    {name:'Free Music Archive',url:'https://freemusicarchive.org',desc:'Música libre y Creative Commons',tags:['cc','libre'],type:'cc'},
+    {name:'Musopen',url:'https://musopen.org',desc:'Música clásica libre de derechos',tags:['clásica','libre'],type:'clasica'},
+  ]},
+
+  podcasts:{id:'podcasts',icon:'🎙️',name:'Podcasts & Audiolibros',color:'#ffc844',sources:[
+    {name:'Spotify Podcasts',url:'https://open.spotify.com/genre/podcasts-web',desc:'Miles de podcasts en español gratis',tags:['podcast','español'],type:'podcast'},
+    {name:'iVoox',url:'https://www.ivoox.com',desc:'La plataforma de podcasts en español',tags:['podcast','español'],type:'podcast'},
+    {name:'LibriVox',url:'https://librivox.org',desc:'Audiolibros de dominio público',tags:['audiolibros','dp'],type:'audiolibro'},
+    {name:'TED Talks',url:'https://www.ted.com/talks',desc:'Conferencias de ideas — video y audio',tags:['educación','ideas'],type:'charla'},
+    {name:'Loyal Books',url:'https://www.loyalbooks.com',desc:'Audiolibros clásicos gratis',tags:['audiolibros','clásicos'],type:'audiolibro'},
+    {name:'Open Culture Audio',url:'https://www.openculture.com/freeaudiobooks',desc:'Cultura y audiolibros gratuitos',tags:['cultura','audiolibros'],type:'cultura'},
+    {name:'Podimo Free',url:'https://podimo.com',desc:'Podcasts originales — contenido gratuito',tags:['podcast','original'],type:'podcast'},
+    {name:'RFI Español Podcast',url:'https://www.rfi.fr/es/podcasts',desc:'Podcasts Radio Francia Internacional',tags:['radio','internacional'],type:'radio'},
+  ]},
+
+  games:{id:'games',icon:'🎮',name:'Juegos e Interactivo',color:'#56b3ff',sources:[
+    {name:'itch.io Free',url:'https://itch.io/games/free',desc:'Miles de juegos indie 100% gratis',tags:['indie','gratis'],type:'indie'},
+    {name:'Archive.org Games',url:'https://archive.org/details/softwarelibrary',desc:'Juegos clásicos DOS/Arcade en navegador',tags:['retro','clásico'],type:'retro'},
+    {name:'Epic Games Free',url:'https://store.epicgames.com/en-US/free-games',desc:'Juegos gratis cada semana Epic',tags:['gratis','pc'],type:'pc'},
+    {name:'CrazyGames',url:'https://www.crazygames.com',desc:'Juegos en el navegador sin instalar',tags:['browser','casual'],type:'browser'},
+    {name:'Poki',url:'https://poki.com',desc:'Juegos para todas las edades',tags:['browser','familiar'],type:'browser'},
+    {name:'Lichess ♟',url:'https://lichess.org',desc:'Ajedrez 100% gratis y open source',tags:['ajedrez','estrategia'],type:'estrategia'},
+    {name:'GOG Free',url:'https://www.gog.com/en/games?priceRange=0,0',desc:'Juegos PC sin DRM — gratis',tags:['gratis','pc'],type:'pc'},
+    {name:'Chess.com Free',url:'https://www.chess.com',desc:'Ajedrez online — modo gratis',tags:['ajedrez','online'],type:'estrategia'},
+    {name:'GameDistribution',url:'https://gamedistribution.com',desc:'Juegos HTML5 gratis en navegador',tags:['browser','html5'],type:'browser'},
+    {name:'Kongregate',url:'https://www.kongregate.com',desc:'Juegos Unity y Flash en navegador',tags:['browser','casual'],type:'browser'},
+  ]},
+
+  edu:{id:'edu',icon:'🎓',name:'Documentales & Educación',color:'#0fd9c8',sources:[
+    {name:'YouTube EDU',url:'https://www.youtube.com/education',desc:'Canal educativo oficial de YouTube',tags:['educación','youtube'],type:'educacion'},
+    {name:'Documentary Heaven',url:'https://documentaryheaven.com',desc:'Documentales gratuitos por categoría',tags:['documental','gratis'],type:'documental'},
+    {name:'Khan Academy',url:'https://www.khanacademy.org',desc:'Educación gratuita K-12 y universidad',tags:['matemáticas','ciencias'],type:'educacion'},
+    {name:'Coursera Audit',url:'https://www.coursera.org',desc:'Cursos universitarios en auditoría gratis',tags:['universidad','cursos'],type:'cursos'},
+    {name:'MIT OpenCourseWare',url:'https://ocw.mit.edu',desc:'Cursos completos del MIT 100% gratis',tags:['universidad','mit'],type:'universidad'},
+    {name:'NASA+ Streaming',url:'https://plus.nasa.gov',desc:'Documentales y ciencia espacial NASA',tags:['ciencia','espacio'],type:'ciencia'},
+    {name:'Top Documentary Films',url:'https://topdocumentaryfilms.com',desc:'Catálogo de documentales clasificados',tags:['documental','catálogo'],type:'documental'},
+    {name:'edX Audit',url:'https://www.edx.org',desc:'Harvard, MIT y más en modo auditoría',tags:['universidad','cursos'],type:'cursos'},
+    {name:'TED-Ed',url:'https://ed.ted.com',desc:'Lecciones animadas TED',tags:['animación','educación'],type:'educacion'},
+    {name:'Crash Course',url:'https://www.youtube.com/@crashcourse',desc:'Cursos acelerados en YouTube',tags:['youtube','ciencias'],type:'youtube'},
+  ]},
+};
+
+/* Internacional */
+const INTL = {regions:[
+  {id:'sudamerica',name:'Sudamérica',icon:'🌎',color:'#3effc8',countries:[
+    {id:'argentina',name:'Argentina',flag:'🇦🇷',color:'#74b9ff',channels:[
+      {name:'TV Pública Argentina',url:'https://www.youtube.com/@tvpublica/live',desc:'Canal estatal nacional',tags:['estatal','noticias']},
+      {name:'TN Todo Noticias',url:'https://www.youtube.com/@tnoficial/live',desc:'Noticias 24h Argentina',tags:['noticias','24h']},
+      {name:'C5N',url:'https://www.youtube.com/@c5n/live',desc:'Noticias y política argentina',tags:['noticias','política']},
+      {name:'A24 Noticias',url:'https://www.youtube.com/@a24noticias/live',desc:'Noticias y análisis político',tags:['noticias','análisis']},
+      {name:'Canal 26',url:'https://www.youtube.com/@canal26ar/live',desc:'Canal informativo argentino',tags:['noticias']},
+      {name:'Crónica TV',url:'https://www.youtube.com/@cronicatv/live',desc:'Noticias populares Argentina',tags:['noticias']},
+      {name:'IP Noticias',url:'https://www.youtube.com/@ipnoticias/live',desc:'Canal independiente Argentina',tags:['noticias','independiente']},
+      {name:'América TV',url:'https://www.youtube.com/@AmericaTV/live',desc:'Entretenimiento y noticias',tags:['entretenimiento']},
+      {name:'Net TV Argentina',url:'https://www.youtube.com/@nettvoficial/live',desc:'Debate y entretenimiento',tags:['entretenimiento','debate']},
+      {name:'El Trece en Vivo',url:'https://www.eltrecetv.com.ar/en-vivo',desc:'Canal de entretenimiento principal',tags:['entretenimiento','variedades']},
+    ]},
+    {id:'chile',name:'Chile',flag:'🇨🇱',color:'#d63031',channels:[
+      {name:'24 Horas TVN',url:'https://www.youtube.com/@24HorasTVN/live',desc:'Noticias 24h canal público',tags:['noticias','estatal']},
+      {name:'CNN Chile',url:'https://www.youtube.com/@CNNChile/live',desc:'Noticias 24h CNN Chile',tags:['noticias']},
+      {name:'CHV Noticias',url:'https://www.youtube.com/@CHVNoticias/live',desc:'Noticias Chilevisión',tags:['noticias']},
+      {name:'T13 Canal 13',url:'https://www.youtube.com/@T13/live',desc:'Noticias y actualidad Chile',tags:['noticias']},
+      {name:'Mega Noticias',url:'https://www.youtube.com/@meganoticias/live',desc:'Noticias Mega Chile',tags:['noticias']},
+      {name:'La Red Chile',url:'https://www.youtube.com/@LaRedChile/live',desc:'Entretenimiento y debates',tags:['entretenimiento']},
+      {name:'Telecanal',url:'https://www.youtube.com/@Telecanal/live',desc:'Entretenimiento Chile',tags:['entretenimiento']},
+      {name:'BioBio TV',url:'https://www.youtube.com/@biobiochile/live',desc:'Multimedia digital Chile',tags:['noticias','digital']},
+      {name:'Cooperativa TV',url:'https://www.youtube.com/@Cooperativa/live',desc:'Radio y TV independiente',tags:['radio','independiente']},
+      {name:'Emol TV',url:'https://www.youtube.com/@Emol/live',desc:'Multimedia El Mercurio',tags:['noticias']},
+    ]},
+    {id:'peru',name:'Perú',flag:'🇵🇪',color:'#e17055',channels:[
+      {name:'TV Perú',url:'https://www.tvperu.gob.pe/senal-en-vivo',desc:'Canal estatal peruano',tags:['estatal','noticias']},
+      {name:'RPP TV',url:'https://www.youtube.com/@RPPnoticias/live',desc:'Radio y TV RPP Noticias',tags:['radio','noticias']},
+      {name:'América TV Perú',url:'https://www.youtube.com/@americatvpe/live',desc:'Entretenimiento y noticias',tags:['entretenimiento']},
+      {name:'ATV Noticias',url:'https://www.youtube.com/@ATVNoticias/live',desc:'Noticias ATV Perú',tags:['noticias']},
+      {name:'Willax TV',url:'https://www.youtube.com/@WillaxTV/live',desc:'Política y noticias',tags:['política']},
+      {name:'Exitosa TV',url:'https://www.youtube.com/@ExitosaTV/live',desc:'Radio Exitosa TV',tags:['radio','noticias']},
+      {name:'Capital TV',url:'https://www.youtube.com/@CapitalTVPeru/live',desc:'Noticias Lima Perú',tags:['noticias']},
+      {name:'Panamericana TV',url:'https://www.panamericana.pe/envivo',desc:'Entretenimiento en vivo',tags:['entretenimiento']},
+      {name:'Latina TV',url:'https://www.latina.pe/envivo',desc:'Latina en vivo',tags:['entretenimiento']},
+      {name:'Noticias Ser',url:'https://www.youtube.com/@NoticiasSer/live',desc:'Periodismo regional independiente',tags:['regional']},
+    ]},
+    {id:'venezuela',name:'Venezuela',flag:'🇻🇪',color:'#fdcb6e',channels:[
+      {name:'VPItv',url:'https://www.youtube.com/@vpitv/live',desc:'TV independiente venezolana',tags:['noticias','independiente']},
+      {name:'EVTV Miami',url:'https://www.youtube.com/@evtvmiami/live',desc:'Venezolana en el exterior',tags:['noticias','diáspora']},
+      {name:'Noticias24',url:'https://www.youtube.com/@noticias24/live',desc:'Noticias digital venezolano',tags:['noticias']},
+      {name:'Caraota Digital',url:'https://www.youtube.com/@CaraotaDigital/live',desc:'Noticias políticas independientes',tags:['política']},
+      {name:'Venevisión',url:'https://www.youtube.com/@venevision/live',desc:'Entretenimiento venezolano',tags:['entretenimiento']},
+      {name:'Tal Cual Digital',url:'https://www.youtube.com/@TalCualDigital/live',desc:'Análisis político venezolano',tags:['política','análisis']},
+      {name:'RCR750 TV',url:'https://www.youtube.com/@RCR750/live',desc:'Radio y TV venezolana',tags:['radio','noticias']},
+      {name:'Globovisión',url:'https://globovision.com',desc:'Canal privado venezolano',tags:['noticias']},
+      {name:'Televen',url:'https://www.televen.com/en-vivo',desc:'Canal de entretenimiento',tags:['entretenimiento']},
+      {name:'VTV Venezuela',url:'https://www.youtube.com/@vtv_canal8/live',desc:'Venezolana de TV estatal',tags:['estatal']},
+    ]},
+    {id:'ecuador',name:'Ecuador',flag:'🇪🇨',color:'#00b894',channels:[
+      {name:'EcuadorTV',url:'https://www.ecuadortv.ec/envivo',desc:'Canal público del Ecuador',tags:['estatal','noticias']},
+      {name:'TC Televisión',url:'https://www.youtube.com/@TCTelevision/live',desc:'Entretenimiento y noticias',tags:['entretenimiento']},
+      {name:'Teleamazonas',url:'https://www.youtube.com/@Teleamazonas/live',desc:'Noticias Teleamazonas',tags:['noticias']},
+      {name:'GamaTV',url:'https://www.youtube.com/@GamaTV/live',desc:'Entretenimiento ecuatoriano',tags:['entretenimiento']},
+      {name:'RTS Ecuador',url:'https://www.youtube.com/@RTSEcuador/live',desc:'Noticias y espectáculos',tags:['noticias']},
+      {name:'Canal UNO EC',url:'https://www.youtube.com/@CanalUNOEcuador/live',desc:'Canal UNO Ecuador',tags:['noticias']},
+      {name:'Ecuavisa',url:'https://www.youtube.com/@ecuavisa/live',desc:'Canal líder de Ecuador',tags:['entretenimiento']},
+      {name:'Extra TV Ecuador',url:'https://www.youtube.com/@ExtraTVEcuador/live',desc:'Entretenimiento y espectáculos',tags:['entretenimiento']},
+      {name:'Oromar TV',url:'https://www.youtube.com/@OromarTV/live',desc:'Canal regional costero',tags:['regional']},
+      {name:'Unsión TV',url:'https://www.youtube.com/@UnsiónTV/live',desc:'Canal cristiano ecuatoriano',tags:['religioso']},
+    ]},
+    {id:'bolivia',name:'Bolivia',flag:'🇧🇴',color:'#a29bfe',channels:[
+      {name:'Bolivia TV',url:'https://www.youtube.com/@BoliviaTV/live',desc:'Canal estatal boliviano',tags:['estatal']},
+      {name:'Red Uno Bolivia',url:'https://www.youtube.com/@RedUnoBolivia/live',desc:'Entretenimiento y noticias',tags:['entretenimiento']},
+      {name:'Unitel Bolivia',url:'https://www.youtube.com/@UniTelBolivia/live',desc:'Noticias Bolivia',tags:['noticias']},
+      {name:'ATB Digital',url:'https://www.youtube.com/@ATBDigital/live',desc:'Entretenimiento ATB',tags:['entretenimiento']},
+      {name:'PAT TV Bolivia',url:'https://www.youtube.com/@PATBolivia/live',desc:'Periodistas Asociados TV',tags:['noticias']},
+      {name:'Bolivisión',url:'https://www.youtube.com/@Bolivision/live',desc:'Entretenimiento boliviano',tags:['entretenimiento']},
+      {name:'TVU Canal 13 BO',url:'https://www.youtube.com/@TVUBolivia/live',desc:'Canal universitario Bolivia',tags:['educación']},
+      {name:'Cadena A Bolivia',url:'https://www.youtube.com/@CadenaABolivia/live',desc:'Noticias y análisis',tags:['noticias']},
+      {name:'RTP Bolivia',url:'https://www.youtube.com/@RTPBolivia/live',desc:'TV privada regional',tags:['regional']},
+      {name:'ETV Bolivia',url:'https://www.youtube.com/@ETVBolivia/live',desc:'Canal educativo Bolivia',tags:['educación']},
+    ]},
+    {id:'paraguay',name:'Paraguay',flag:'🇵🇾',color:'#fd79a8',channels:[
+      {name:'Telefuturo',url:'https://www.youtube.com/@Telefuturo/live',desc:'Entretenimiento Paraguay',tags:['entretenimiento']},
+      {name:'SNT Canal 9',url:'https://www.youtube.com/@CanalSNT/live',desc:'Canal estatal paraguayo',tags:['estatal']},
+      {name:'NPY Noticias',url:'https://www.youtube.com/@NPYoficial/live',desc:'Noticias Paraguay en vivo',tags:['noticias']},
+      {name:'GEN Noticias PY',url:'https://www.youtube.com/@GenParaguay/live',desc:'Noticias y análisis Paraguay',tags:['noticias']},
+      {name:'La Tele Paraguay',url:'https://www.youtube.com/@LaTelePy/live',desc:'Entretenimiento popular',tags:['entretenimiento']},
+      {name:'Canal 13 PY',url:'https://www.youtube.com/@canal13py/live',desc:'Canal educativo y cultural',tags:['educación']},
+      {name:'Fama TV PY',url:'https://www.youtube.com/@FamaTV/live',desc:'Espectáculos y entretenimiento',tags:['entretenimiento']},
+      {name:'Ñandutí TV',url:'https://www.youtube.com/@nanduti/live',desc:'Radio y TV Ñandutí',tags:['radio','noticias']},
+      {name:'Unicanal PY',url:'https://www.youtube.com/@Unicanal/live',desc:'Canal independiente Paraguay',tags:['noticias']},
+      {name:'ABC TV Paraguay',url:'https://www.youtube.com/@ABCPYPUNTO/live',desc:'ABC Color TV debates',tags:['noticias','debate']},
+    ]},
+    {id:'uruguay',name:'Uruguay',flag:'🇺🇾',color:'#00cec9',channels:[
+      {name:'Canal 4 Montecarlo',url:'https://www.youtube.com/@MonteCarloCx/live',desc:'Entretenimiento Canal 4',tags:['entretenimiento']},
+      {name:'Canal 10 Uruguay',url:'https://www.youtube.com/@canal10uy/live',desc:'Entretenimiento Canal 10',tags:['entretenimiento']},
+      {name:'Teledoce Uruguay',url:'https://www.youtube.com/@Teledoce/live',desc:'Canal 12 Uruguay',tags:['entretenimiento']},
+      {name:'TNU (TV Nacional)',url:'https://www.youtube.com/@TNUTelevision/live',desc:'TV Nacional Uruguay estatal',tags:['estatal']},
+      {name:'Subrayado TV',url:'https://www.youtube.com/@SubrayadoUy/live',desc:'Noticias Uruguay digital',tags:['noticias']},
+      {name:'VTV+ Uruguay',url:'https://www.youtube.com/@VTVUruguay/live',desc:'Deportes y noticias VTV',tags:['deportes']},
+      {name:'TV Ciudad Montevideo',url:'https://www.youtube.com/@TVCiudad/live',desc:'TV Intendencia Montevideo',tags:['cultura']},
+      {name:'En Perspectiva TV',url:'https://www.youtube.com/@EnPerspectiva/live',desc:'Análisis político Uruguay',tags:['política']},
+      {name:'Montevideo Portal TV',url:'https://www.youtube.com/@montevideoportal/live',desc:'Portal multimedia digital',tags:['noticias','digital']},
+      {name:'Radio Uruguay TV',url:'https://www.youtube.com/@RadioUruguay/live',desc:'Radio Uruguay estatal',tags:['radio','estatal']},
+    ]},
+  ]},
+  {id:'mexico',name:'México',icon:'🦅',color:'#27ae60',countries:[
+    {id:'mexico',name:'México',flag:'🇲🇽',color:'#27ae60',channels:[
+      {name:'Canal Once IPN',url:'https://www.youtube.com/@Canal11/live',desc:'Canal público cultural IPN',tags:['estatal','educación']},
+      {name:'Canal 22',url:'https://www.youtube.com/@Canal22MX/live',desc:'Arte y cultura México',tags:['arte','cultura']},
+      {name:'ADN40',url:'https://www.youtube.com/@ADN40/live',desc:'Noticias 24h México',tags:['noticias','24h']},
+      {name:'ForoTV Televisa',url:'https://www.youtube.com/@ForoTV/live',desc:'Canal informativo Televisa',tags:['noticias']},
+      {name:'Milenio TV',url:'https://www.youtube.com/@MilenioTelevision/live',desc:'Noticias Milenio 24h',tags:['noticias']},
+      {name:'El Heraldo TV',url:'https://www.youtube.com/@heraldodemexico/live',desc:'Noticias y debate Heraldo',tags:['noticias','debate']},
+      {name:'Imagen TV',url:'https://www.youtube.com/@Imagen_Television/live',desc:'Entretenimiento Imagen TV',tags:['entretenimiento']},
+      {name:'N+ Noticieros',url:'https://www.youtube.com/@nmasnoticias/live',desc:'Noticias Televisa México',tags:['noticias']},
+      {name:'Azteca Noticias',url:'https://www.youtube.com/@AztecaNoticias/live',desc:'Noticias TV Azteca',tags:['noticias']},
+      {name:'UNAM TV',url:'https://www.youtube.com/@UNAMtv/live',desc:'TV universitaria UNAM',tags:['educación']},
+    ]},
+  ]},
+  {id:'canada',name:'Canadá',icon:'🍁',color:'#e74c3c',countries:[
+    {id:'canada',name:'Canadá',flag:'🇨🇦',color:'#e74c3c',channels:[
+      {name:'CBC News',url:'https://www.youtube.com/@CBCNews/live',desc:'Canadian Broadcasting Corp.',tags:['estatal','inglés']},
+      {name:'Global News',url:'https://www.youtube.com/@GlobalNews/live',desc:'Noticias Global Canadá',tags:['noticias']},
+      {name:'CTV News',url:'https://www.youtube.com/@CTVNews/live',desc:'CTV noticias nacionales',tags:['noticias']},
+      {name:'CP24 Toronto',url:'https://www.cp24.com/live-news',desc:'Noticias 24h Toronto',tags:['noticias','toronto']},
+      {name:'CPAC Parlamento',url:'https://www.youtube.com/@CPAC/live',desc:'Política parlamentaria canadiense',tags:['política']},
+      {name:'Knowledge Network BC',url:'https://www.knowledge.ca/live',desc:'Educación y docs Columbia Británica',tags:['educación']},
+      {name:'TFO Ontario',url:'https://www.tfo.org',desc:'TV francófona educativa Ontario',tags:['francés','educación']},
+      {name:'Citytv News',url:'https://www.youtube.com/@Citytv/live',desc:'Entretenimiento y noticias',tags:['entretenimiento']},
+      {name:'APTN Nacional',url:'https://www.youtube.com/@APTNNational/live',desc:'Aboriginal Peoples Television',tags:['indígena']},
+      {name:'NTV Newfoundland',url:'https://www.youtube.com/@NTVNewsNL/live',desc:'Noticias regionales Newfoundland',tags:['regional']},
+    ]},
+  ]},
+  {id:'europa',name:'Europa',icon:'🏰',color:'#0984e3',countries:[
+    {id:'espana',name:'España',flag:'🇪🇸',color:'#e74c3c',channels:[
+      {name:'RTVE La 1',url:'https://www.rtve.es/directo/la-1',desc:'Canal principal TVE España',tags:['estatal']},
+      {name:'RTVE 24h',url:'https://www.rtve.es/directo/canal-24h',desc:'Noticias 24h RTVE',tags:['noticias','estatal']},
+      {name:'La 2 RTVE',url:'https://www.rtve.es/directo/la-2',desc:'Cultura y documentales La 2',tags:['cultura']},
+      {name:'Telemadrid',url:'https://www.youtube.com/@Telemadrid/live',desc:'Canal regional Madrid',tags:['madrid']},
+      {name:'Canal Sur',url:'https://www.youtube.com/@canalsur/live',desc:'Canal público Andalucía',tags:['andalucía']},
+      {name:'À Punt Media',url:'https://www.youtube.com/@apuntmedia/live',desc:'TV pública Valenciana',tags:['valencia']},
+      {name:'EITB Euskadi',url:'https://www.youtube.com/@EITB/live',desc:'TV pública vasca',tags:['euskadi']},
+      {name:'Aragón TV',url:'https://www.youtube.com/@aragontelevision/live',desc:'TV pública Aragón',tags:['aragón']},
+      {name:'8 Madrid',url:'https://www.youtube.com/@8madrid/live',desc:'Canal Madrid debates y noticias',tags:['madrid','debate']},
+      {name:'Euronews ES',url:'https://es.euronews.com/live',desc:'Noticias europeas en español',tags:['europa','noticias']},
+    ]},
+    {id:'francia',name:'Francia',flag:'🇫🇷',color:'#0984e3',channels:[
+      {name:'France 24 FR',url:'https://www.youtube.com/@France24/live',desc:'Canal internacional francés',tags:['internacional']},
+      {name:'BFMTV',url:'https://www.youtube.com/@BFMTV/live',desc:'Noticias 24h Francia',tags:['noticias']},
+      {name:'LCI France',url:'https://www.youtube.com/@LCI/live',desc:'Le Monde Infos',tags:['noticias']},
+      {name:'France Info TV',url:'https://www.youtube.com/@franceinfo/live',desc:'Canal público noticias',tags:['estatal','noticias']},
+      {name:'TV5Monde',url:'https://www.youtube.com/@tv5monde/live',desc:'Francofonía mundial',tags:['francofonía']},
+      {name:'CNews France',url:'https://www.youtube.com/@CNEWS/live',desc:'Noticias y debate CNews',tags:['noticias']},
+      {name:'Arte FR/DE',url:'https://www.youtube.com/@arte/live',desc:'Arte y cultura Europa',tags:['arte','cultura']},
+      {name:'Public Sénat',url:'https://www.youtube.com/@publicsenat/live',desc:'Parlamento francés',tags:['política']},
+      {name:'RFI France',url:'https://www.youtube.com/@RFI/live',desc:'Radio Francia Internacional',tags:['radio']},
+      {name:'i24 News FR',url:'https://www.youtube.com/@i24newsfrancais/live',desc:'Noticias en francés i24',tags:['noticias']},
+    ]},
+    {id:'alemania',name:'Alemania',flag:'🇩🇪',color:'#fdcb6e',channels:[
+      {name:'DW Deutsch',url:'https://www.youtube.com/@dw_deutsch/live',desc:'Deutsche Welle internacional',tags:['estatal','internacional']},
+      {name:'DW English',url:'https://www.youtube.com/@DWNews/live',desc:'Deutsche Welle en inglés',tags:['inglés']},
+      {name:'Phoenix News DE',url:'https://www.youtube.com/@phoenix/live',desc:'Política alemana Phoenix',tags:['noticias','política']},
+      {name:'n-tv',url:'https://www.youtube.com/@ntv/live',desc:'Noticias 24h Alemania',tags:['noticias']},
+      {name:'WELT News',url:'https://www.youtube.com/@WELT/live',desc:'Die Welt — noticias',tags:['noticias']},
+      {name:'BR24 Bayern',url:'https://www.youtube.com/@BR24/live',desc:'Bavarian TV regional',tags:['regional']},
+      {name:'ARD',url:'https://www.youtube.com/@ARD/live',desc:'Canal público ARD',tags:['estatal']},
+      {name:'ZDF',url:'https://www.youtube.com/@ZDF/live',desc:'Zweites Deutsches Fernsehen',tags:['estatal']},
+      {name:'Arte DE',url:'https://www.youtube.com/@ARTEde/live',desc:'Arte Europa en alemán',tags:['arte']},
+      {name:'MDR',url:'https://www.youtube.com/@MDRde/live',desc:'TV centro Alemania',tags:['regional']},
+    ]},
+    {id:'italia',name:'Italia',flag:'🇮🇹',color:'#27ae60',channels:[
+      {name:'RAI News 24',url:'https://www.youtube.com/@rainews/live',desc:'Noticias 24h RAI Italia',tags:['estatal','noticias']},
+      {name:'Sky TG24',url:'https://www.youtube.com/@SkyTG24/live',desc:'Noticias Sky Italia',tags:['noticias']},
+      {name:'TGCom24',url:'https://www.youtube.com/@TGCOM24/live',desc:'Noticias Mediaset',tags:['noticias']},
+      {name:'La7 Italia',url:'https://www.youtube.com/@La7/live',desc:'Debate y análisis Italia',tags:['debate']},
+      {name:'RaiCultura',url:'https://www.youtube.com/@raiCultura/live',desc:'Cultura y arte RAI',tags:['cultura']},
+      {name:'Rete 4',url:'https://www.youtube.com/@rete4/live',desc:'Entretenimiento Mediaset',tags:['entretenimiento']},
+      {name:'RAI Storia',url:'https://www.youtube.com/@RAIstoria/live',desc:'Historia documentales RAI',tags:['historia']},
+      {name:'TV2000',url:'https://www.youtube.com/@TV2000it/live',desc:'Canal Conferencia Episcopal',tags:['religioso']},
+      {name:'Corriere TV',url:'https://www.youtube.com/@CorrereTV/live',desc:'Corriere della Sera digital',tags:['noticias']},
+      {name:'Repubblica TV',url:'https://www.youtube.com/@RepubblicaTV/live',desc:'La Repubblica digital',tags:['noticias']},
+    ]},
+    {id:'reino_unido',name:'Reino Unido',flag:'🇬🇧',color:'#0984e3',channels:[
+      {name:'Sky News UK',url:'https://www.youtube.com/@SkyNews/live',desc:'Noticias Sky UK 24h',tags:['noticias']},
+      {name:'BBC News',url:'https://www.youtube.com/@BBCNews/live',desc:'BBC noticias públicas UK',tags:['estatal','noticias']},
+      {name:'GB News',url:'https://www.youtube.com/@GBNEWS/live',desc:'Canal independiente UK',tags:['noticias']},
+      {name:'Channel 4 News',url:'https://www.youtube.com/@Channel4News/live',desc:'Periodismo independiente',tags:['noticias']},
+      {name:'LBC UK',url:'https://www.youtube.com/@LBC/live',desc:'Radio y TV debate UK',tags:['radio','debate']},
+      {name:'ITV News',url:'https://www.youtube.com/@itvnews/live',desc:'Noticias ITV Gran Bretaña',tags:['noticias']},
+      {name:'Times Radio',url:'https://www.youtube.com/@TimesRadio/live',desc:'The Times UK radio',tags:['radio']},
+      {name:'Talk TV UK',url:'https://www.youtube.com/@TalkTV/live',desc:'Debate Talk TV',tags:['debate']},
+      {name:'Al Jazeera EN',url:'https://www.youtube.com/@AlJazeeraEnglish/live',desc:'Al Jazeera inglés',tags:['internacional']},
+      {name:'TRT World',url:'https://www.youtube.com/@TRTWorld/live',desc:'Turkish TV internacional',tags:['internacional']},
+    ]},
+    {id:'portugal',name:'Portugal',flag:'🇵🇹',color:'#e74c3c',channels:[
+      {name:'RTP Notícias',url:'https://www.youtube.com/@RTPNoticias/live',desc:'RTP canal público Portugal',tags:['estatal','noticias']},
+      {name:'SIC Notícias',url:'https://www.youtube.com/@SICNoticias/live',desc:'SIC noticias 24h',tags:['noticias']},
+      {name:'TVI 24',url:'https://www.youtube.com/@TVI24/live',desc:'TVI 24 Portugal',tags:['noticias']},
+      {name:'CNN Portugal',url:'https://www.youtube.com/@CNNPortugal/live',desc:'CNN Portugal',tags:['noticias']},
+      {name:'CMTV',url:'https://www.youtube.com/@CMTV/live',desc:'Correio Manhã TV',tags:['noticias']},
+      {name:'Porto Canal',url:'https://www.youtube.com/@PortoCanal/live',desc:'Regional Norte Portugal',tags:['regional']},
+      {name:'Euronews PT',url:'https://www.youtube.com/@euronewsportugal/live',desc:'Euronews português',tags:['europa']},
+      {name:'RTP2 Direto',url:'https://www.rtp.pt/play/direto/rtp2',desc:'Canal cultural RTP',tags:['cultura']},
+      {name:'RTP Memória',url:'https://www.rtp.pt/play/direto/rtp-memoria',desc:'Arquivo histórico RTP',tags:['historia']},
+      {name:'Antena 3 PT TV',url:'https://www.youtube.com/@Antena3Portugal/live',desc:'Antena 3 Portugal',tags:['radio']},
+    ]},
+  ]},
+  {id:'asia',name:'Asia',icon:'🌏',color:'#e17055',countries:[
+    {id:'china',name:'China & Hong Kong',flag:'🇨🇳',color:'#e17055',channels:[
+      {name:'CGTN English',url:'https://www.youtube.com/@CGTNOfficial/live',desc:'China Global TV en inglés',tags:['estatal','inglés']},
+      {name:'CGTN Español',url:'https://www.youtube.com/@CGTNenEspanol/live',desc:'CGTN en español',tags:['estatal','español']},
+      {name:'CCTV-4 América',url:'https://tv.cctv.com/live/cctv4',desc:'CCTV 4 para América',tags:['mandarín']},
+      {name:'Phoenix TV HK',url:'https://www.youtube.com/@phoenixtelevision/live',desc:'Phoenix Television HK',tags:['hong-kong']},
+      {name:'Xinhua News',url:'https://www.youtube.com/@XinhuaVideoChannel/live',desc:'Agencia Xinhua oficial',tags:['noticias']},
+      {name:'China Daily TV',url:'https://www.youtube.com/@ChinaDailyVideo/live',desc:'China Daily en inglés',tags:['inglés']},
+      {name:'NTD Television',url:'https://www.youtube.com/@NTDChineseTV/live',desc:'NTD independiente',tags:['independiente']},
+      {name:'TVB Hong Kong',url:'https://www.youtube.com/@TVBofficial/live',desc:'TVB entretenimiento HK',tags:['hong-kong']},
+      {name:'RTHK HK',url:'https://www.youtube.com/@rthkhk/live',desc:'Radio TV HK estatal',tags:['estatal']},
+      {name:'Shanghai Dragon TV',url:'https://www.youtube.com/@ShanghaiDragonTV/live',desc:'Dragon TV Shanghai',tags:['shanghai']},
+    ]},
+  ]},
+]};
+
+/* ══ HOOKS ══ */
+function useAlert() {
+  const [show,setShow]=useState(false);
+  const [type,setType]=useState(null);
+  useEffect(()=>{
+    function ck(){
+      const n=new Date(),d=n.getDay();
+      if(d===0||d===6)return;
+      const t=n.getHours()*60+n.getMinutes();
+      if(t>=735&&t<750){setShow(true);setType('wn');}
+      else if(t>=750&&t<780){setShow(true);setType('lv');}
+      else{setShow(false);setType(null);}
+    }
+    ck(); const iv=setInterval(ck,30000); return ()=>clearInterval(iv);
+  },[]);
+  return{show,type,dismiss:()=>setShow(false)};
+}
+
+/* ══ COMPONENTS ══ */
+function Header({total}){
+  return(
+    <header className="hdr">
+      <div className="logo">◈ CTRL<span className="logo-plus">+</span>PLAY<span className="logo-v">v2.1</span></div>
+      <div className="hr">
+        <span className="pill p-sec">🔒 SEGURO</span>
+        <span className="pill p-live"><span className="ldot"/>LIVE</span>
+        <span className="pill p-free">⚡ GRATIS</span>
+        <span className="pill p-cnt">📡 {total} fuentes</span>
+      </div>
+    </header>
+  );
+}
+
+function AlertBanner({type,onDismiss}){
+  if(!type)return null;
+  return(
+    <div className="alert">
+      <div className="al">
+        <span className="ldot"/>
+        <span className={`at ${type}`}>
+          {type==='lv'?'🔴 AL AIRE — Noticias Caracol 12:30 PM':'⏰ EN 15 MIN — Noticias Caracol 12:30 PM'}
+        </span>
+        <button className="btn-al" onClick={()=>safeOpen('https://www.youtube.com/@NoticiasCaracol/live')}>▶ Ver en Vivo ↗</button>
+      </div>
+      <button className="btn-cl" onClick={onDismiss}>✕</button>
+    </div>
+  );
+}
+
+function SearchBar({value,onChange,count}){
+  return(
+    <div className="sw">
+      <input type="search" className="si"
+        placeholder="🔍  Buscar — música, películas, colombia, fútbol, cartoons, china, mundial..."
+        value={value} onChange={e=>onChange(e.target.value)}
+        maxLength={100} autoComplete="off" spellCheck="false"/>
+      {value
+        ?<div className="sh"><strong>{count}</strong> resultado{count!==1?'s':''} para "{value}"</div>
+        :<div className="sh">Busca en <strong>250+</strong> fuentes — fútbol, historietas, 16 países · Todo gratis y legal</div>}
+    </div>
+  );
+}
+
+function ChannelCard({src,accent}){
+  const [cp,setCp]=useState(false);
+  const handleCp=e=>{e.stopPropagation();safeCopy(src.name);setCp(true);setTimeout(()=>setCp(false),1400);};
+  return(
+    <div className="card" style={{'--ca':accent}} onClick={()=>safeOpen(src.url)}>
+      <div className="ctop">
+        <div className="cn">{src.name}</div>
+        {src.type&&<span className="ctp" style={{background:`${accent}18`,color:accent,border:`1px solid ${accent}44`}}>{src.type}</span>}
+      </div>
+      <div className="cd">{src.desc}</div>
+      {src.tags&&src.tags.length>0&&<div className="ctags">{src.tags.map(t=><span key={t} className="tag">#{t}</span>)}</div>}
+      <div className="cact">
+        <button className="bop" onClick={e=>{e.stopPropagation();safeOpen(src.url);}}>↗ Abrir</button>
+        <button className="bcp" onClick={handleCp} title="Copiar">{cp?'✓':'⎘'}</button>
+      </div>
+    </div>
+  );
+}
+
+function CatView({cat}){
+  return(
+    <div>
+      <div className="sh2">
+        <span className="si2">{cat.icon}</span>
+        <span className="st2" style={{color:cat.color}}>{cat.name}</span>
+        {cat.badge&&<span className="pill p-live" style={{background:cat.color,border:'none',color:cat.id==='futbol'?'#000':'#fff'}}>
+          {cat.badge==='LIVE'&&<span className="ldot"/>}{cat.badge}
+        </span>}
+        <span className="sc">{cat.sources.length} fuentes</span>
+      </div>
+      <div className="grid">
+        {cat.sources.map(s=><ChannelCard key={s.name} src={s} accent={cat.color}/>)}
+      </div>
+    </div>
+  );
+}
+
+function IntlView(){
+  const [reg,setReg]=useState('sudamerica');
+  const [ctry,setCtry]=useState('argentina');
+  const R=INTL.regions.find(r=>r.id===reg);
+  const C=R?.countries.find(c=>c.id===ctry);
+  const total=useMemo(()=>INTL.regions.reduce((a,r)=>a+r.countries.reduce((b,c)=>b+c.channels.length,0),0),[]);
+  const changeReg=id=>{setReg(id);const r=INTL.regions.find(r=>r.id===id);if(r?.countries[0])setCtry(r.countries[0].id);};
+  return(
+    <div>
+      <div className="sh2">
+        <span className="si2">🌎</span>
+        <span className="st2" style={{color:'#7c6eff'}}>Canales Internacionales</span>
+        <span className="pill p-free" style={{fontSize:10,padding:'2px 8px'}}>NEW v2.1</span>
+        <span className="sc">{total} canales · 16 países</span>
+      </div>
+      <div className="rtabs">
+        {INTL.regions.map(r=>(
+          <button key={r.id} className={`rb ${reg===r.id?'act':''}`}
+            style={reg===r.id?{borderColor:r.color,color:r.color,background:`${r.color}12`}:{}}
+            onClick={()=>changeReg(r.id)}>
+            {r.icon} {r.name}
+            <span style={{marginLeft:3,fontSize:10,color:'var(--t2)'}}>{r.countries.reduce((a,c)=>a+c.channels.length,0)}</span>
+          </button>
+        ))}
+      </div>
+      <div className="il">
+        <div className="sb">
+          {R&&<div className="sg">
+            <div className="slbl">{R.icon} {R.name}</div>
+            {R.countries.map(c=>(
+              <button key={c.id} className={`cb ${ctry===c.id?'sel':''}`}
+                style={ctry===c.id?{borderLeftColor:c.color,color:c.color}:{}}
+                onClick={()=>setCtry(c.id)}>
+                <span className="flg">{c.flag}</span>
+                <span style={{flex:1}}>{c.name}</span>
+                <span className="cc">{c.channels.length}</span>
+              </button>
+            ))}
+          </div>}
+        </div>
+        <div>
+          {C&&<>
+            <div className="chdr">
+              <span className="cflg">{C.flag}</span>
+              <div className="ci">
+                <h2 style={{color:C.color}}>{C.name}</h2>
+                <p>{C.channels.length} canales gratuitos verificados</p>
+              </div>
+              <div className="cbdgs">
+                <span className="pill p-sec" style={{fontSize:10}}>🔒 URLs validadas</span>
+                <span className="pill p-free" style={{fontSize:10}}>✓ Legal</span>
+              </div>
+            </div>
+            <div className="grid">
+              {C.channels.map(ch=><ChannelCard key={ch.name} src={ch} accent={C.color}/>)}
+            </div>
+          </>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SearchResults({query,allSrc}){
+  const q=query.toLowerCase().trim();
+  const res=allSrc.filter(s=>s.name.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q)||(s.tags&&s.tags.some(t=>t.toLowerCase().includes(q))));
+  if(!res.length)return(
+    <div className="nores">
+      <div style={{fontSize:40,marginBottom:14}}>🔍</div>
+      <div style={{color:'var(--t1)',marginBottom:8}}>Sin resultados para "{query}"</div>
+      <div style={{fontSize:11}}>Prueba: música, colombia, argentina, fútbol, cartoons, china, mundial...</div>
+    </div>
+  );
+  return(
+    <div>
+      <div className="sh2">
+        <span className="si2">🔍</span>
+        <span className="st2" style={{color:'#ff8c42'}}>Búsqueda</span>
+        <span className="sc">{res.length} resultado{res.length!==1?'s':''}</span>
+      </div>
+      <div className="grid">{res.map(s=><ChannelCard key={s.name+s.url} src={s} accent={s._a||'#7c6eff'}/>)}</div>
+    </div>
+  );
+}
+
+/* ══ APP ══ */
+function App(){
+  const [tab,setTab]=useState('live');
+  const [search,setSearch]=useState('');
+  const {show,type,dismiss}=useAlert();
+
+  const allSrc=useMemo(()=>{
+    const out=[];
+    Object.values(CAT).forEach(c=>c.sources.forEach(s=>out.push({...s,_a:c.color})));
+    INTL.regions.forEach(r=>r.countries.forEach(c=>c.channels.forEach(ch=>out.push({...ch,_a:c.color}))));
+    return out;
+  },[]);
+
+  const total=useMemo(()=>{
+    let n=Object.values(CAT).reduce((a,c)=>a+c.sources.length,0);
+    INTL.regions.forEach(r=>r.countries.forEach(c=>{n+=c.channels.length;}));
+    return n;
+  },[]);
+
+  const filtCount=useMemo(()=>{
+    if(!search.trim())return 0;
+    const q=search.toLowerCase();
+    return allSrc.filter(s=>s.name.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q)||(s.tags&&s.tags.some(t=>t.toLowerCase().includes(q)))).length;
+  },[search,allSrc]);
+
+  const tabs=[
+    {id:'live',lbl:'🔴 En Vivo',color:'#ff3b5c'},
+    {id:'futbol',lbl:'⚽ Fútbol',color:'#00d084',badge:'MUNDIAL'},
+    {id:'toon',lbl:'🎨 Historietas',color:'#ff9f1c',badge:'NEW'},
+    {id:'internacional',lbl:'🌎 Internacional',color:'#7c6eff',badge:'NEW'},
+    {id:'movies',lbl:'🎬 Películas',color:'#ff6eb4'},
+    {id:'music',lbl:'🎵 Música',color:'#3effc8'},
+    {id:'podcasts',lbl:'🎙️ Podcasts',color:'#ffc844'},
+    {id:'games',lbl:'🎮 Juegos',color:'#56b3ff'},
+    {id:'edu',lbl:'🎓 Educación',color:'#0fd9c8'},
+  ];
+
+  return(
+    <div>
+      <Header total={total}/>
+      {show&&<AlertBanner type={type} onDismiss={dismiss}/>}
+      <div className="stats">
+        <div className="st">📡 <strong>{total}</strong> fuentes totales</div>
+        <div style={{width:1,height:14,background:'var(--bdh)'}}/>
+        <div className="st">🌎 <strong>16</strong> países</div>
+        <div style={{width:1,height:14,background:'var(--bdh)'}}/>
+        <div className="st">⚽ <strong>Mundial 2026</strong></div>
+        <div style={{width:1,height:14,background:'var(--bdh)'}}/>
+        <div className="st">🔒 <strong style={{color:'#3effc8'}}>Seguridad v2.1</strong></div>
+        <div style={{marginLeft:'auto',fontSize:10,color:'var(--t2)'}}>Chain Industria · Asesoramiento I. Matías Cadena</div>
+      </div>
+      <SearchBar value={search} onChange={setSearch} count={filtCount}/>
+      <nav className="nav">
+        {tabs.map(t=>(
+          <button key={t.id} className={`nb ${tab===t.id?'act':''}`}
+            style={tab===t.id?{borderBottomColor:t.color,color:t.color}:{}}
+            onClick={()=>setTab(t.id)}>
+            {t.lbl}
+            {t.badge==='MUNDIAL'&&<span className="nb-hot">{t.badge}</span>}
+            {t.badge==='NEW'&&<span className="nb-new">{t.badge}</span>}
+          </button>
+        ))}
+      </nav>
+      <main className="ct">
+        {search.trim()
+          ?<SearchResults query={search} allSrc={allSrc}/>
+          :<>
+            {tab==='live'&&<CatView cat={CAT.live}/>}
+            {tab==='futbol'&&<CatView cat={CAT.futbol}/>}
+            {tab==='toon'&&<CatView cat={CAT.toon}/>}
+            {tab==='internacional'&&<IntlView/>}
+            {tab==='movies'&&<CatView cat={CAT.movies}/>}
+            {tab==='music'&&<CatView cat={CAT.music}/>}
+            {tab==='podcasts'&&<CatView cat={CAT.podcasts}/>}
+            {tab==='games'&&<CatView cat={CAT.games}/>}
+            {tab==='edu'&&<CatView cat={CAT.edu}/>}
+          </>}
+      </main>
+      <footer className="ftr">
+        <div className="flogo">◈ CTRL+PLAY</div>
+        <div className="fdev">Desarrollado por <strong>Chain Industria</strong> · Asesoramiento <span className="asesor">I. Matías Cadena</span></div>
+        <div style={{fontSize:11,color:'var(--t2)',marginTop:4}}>Medellín, Colombia 🇨🇴 · ctrlplay-six.vercel.app · v2.1 · Mayo 2026</div>
+        <div className="fnote">⚠️ CTRL+PLAY no aloja contenido. Solo enlaza fuentes externas gratuitas y legales. El usuario es responsable de verificar los términos de cada plataforma en su región.</div>
+      </footer>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
-
 </body>
 </html>
-``
